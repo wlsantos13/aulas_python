@@ -1,0 +1,29 @@
+Praticando Modelagem de Dados
+Informações:
+Você ficou encarregado(a) de trabalhar no Banco de Dados de um site que vai ser criado para uma Livraria.
+
+O responsável pelo projeto foi consultar o cliente (livraria) e, a partir dos requisitos que foram solicitados, ele criou um resumo das regras de negócios que você vai precisar ter em mente ao fazer a Modelagem do Banco de Dados.
+
+Regras de Negócios:
+Queremos coletar os dados pessoais de nossos clientes: CPF, nome, endereço, telefone e e-mail.
+
+Os livros que vendemos têm informações associadas a eles, como seu título, categoria, ISBN, ano de publicação, editora, bem como autor ou autores da obra.
+
+Nossos livros são fornecidos por editoras. Precisamos ter o nome de contato, o e-mail e, no máximo, dois telefones da editora.
+
+Não é possível ter o mesmo livro vindo de várias editoras. Cada livro é exclusivo de uma editora.
+
+Nossos clientes podem comprar um ou mais livros em um pedido de compra. Mas, antes que ele faça a compra, é preciso verificar se o livro está disponível em estoque para que a compra seja efetuada.
+
+Proposta:
+Com base nesses requisitos, crie a Modelagem de Dados Conceitual, Modelagem de Dados Lógica e Modelagem de Dados Física desse Banco de Dados e, em seguida, crie um script SQL da criação desse Banco de Dados no PostgreSQL.
+
+Importante:
+Utilize o drawio para criar as Modelagens de Dados;
+
+Salve o script SQL em um arquivo no formato script.sql;
+
+Faça um .zip dos arquivos (Modelagens de Dados e script SQL);
+
+Envie o .zip no e-mail do Coder. Título do e-mail: [Modelagem de Dados - Turma #Numero_Turma - Seu_Nome ]
+

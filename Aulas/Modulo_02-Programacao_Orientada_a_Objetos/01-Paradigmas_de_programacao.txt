@@ -1,0 +1,28 @@
+1. Paradigmas de programação
+Ao longo do curso, sempre pensamos nossos programas como sequências de comandos.
+Uma instrução abaixo da outra, na ordem em que devem ser executadas.
+Quando muito agrupávamos algumas instruções dentro de uma função e fazíamos desvios 
+de fluxo para essas funções. Dentro de cada uma delas, porém, havia a mesma estrutura
+sequencial de instruções. Chamamos esse modelo de programação imperativa ou programação
+procedural.
+
+Porém, essa não é a única forma de organizar um programa. Temos diversas outras formas 
+de pensar em um programa. Chamamos essas formas de paradigmas de programação. 
+Uma linguagem de programação pode suportar exclusivamente um paradigma ou vários 
+paradigmas. A linguagem C, por exemplo, é usada apenas para programação procedural.
+Já o Python pode ser usado para programação procedural, orientada a objeto, funcional, 
+entre outros.
+
+Vejamos alguns exemplos:
+
+- Programação procedural/imperativa: foco em instruções que modificam o estado do programa 
+e modularização em funções.
+- Programação orientada a objeto: foco na modelagem das entidades envolvidas em um problema
+(objetos) e na interação entre elas.
+- Programação funcional: foco na declaração e avaliação de funções, que são definidas como 
+árvores de expressões que sempre retornam valores, ao invés de blocos de instruções.
+- Programação orientada a evento: foco na resposta a ação dos usuários (por exemplo, um clique
+do mouse provoca uma reação do programa).
+
+Estudaremos um pouco sobre o paradigma orientado a objeto.
+

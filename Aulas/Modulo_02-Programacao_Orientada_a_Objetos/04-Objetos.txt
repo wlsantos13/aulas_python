@@ -1,0 +1,28 @@
+4. Objetos
+4.1. Instanciando objetos
+Ao rodar o exemplo acima, nada acontece. Isso ocorre porque apenas ensinamos o Python como criar jogadores, mas nunca chegamos a criar um. É exatamente o mesmo caso de quando definimos uma função mas não a chamamos.
+
+Criamos objetos da mesma maneira que criamos variáveis: damos um nome a eles e atribuímos um "valor". No caso, o "valor" atribuido será uma "chamada" para o nome da classe, como se ela fosse uma função. Adicione o seguinte trecho de código fora da classe Jogador (ou seja, após a classe e sem tabs):
+
+player1 = Jogador('Mario')
+# vejamos o tipo da "variável" (objeto) que criamos:
+print(type(player1)) 
+Quando chamamos a classe dessa maneira, o Python irá automaticamente executar o método construtor (__init__). Algo que pode chamar a atenção é que o método possui 2 parâmetros: self e nome. Porém, nós passamos apenas o nome. O parâmetro self é implícito: nós nunca o passamos, ele é apenas um meio de informarmos ao Python qual será o "apelido" do objeto que está chamando o método para usarmos internamente no método para acessar seus atributos.
+
+Note que player1 é do tipo 'class Jogador'. Ou seja, a nossa classe é considerada um tipo novo de dado, e os objetos são variáveis desse tipo novo.
+
+4.2. Acessando atributos
+Para acessar um atributo, usamos o nome do objeto, um ponto e o nome do atributo. Vamos acessar o nome do nosso jogador e o seu placar atual:
+
+print(player1.nome)
+print(player1.pontuacao)
+Os atributos se comportam como variáveis normais. Podemos ler seu valor e escrever valores novos:
+
+player1.nome = 'Luigi'
+print(player1.nome)
+4.3. Executando métodos
+Para executar o método, iremos chamá-lo à partir do objeto, da mesma maneira que fizemos com os atributos:
+
+player1.rolaDado()
+print(player1.pontuacao)
+A notação de um método sendo chamado por um objeto parece familiar? É porque já estamos usando essa notação faz um tempo. Lembra do lista.append() ou do string.upper()? Pois bem: list e str são classes, e todas aquelas funções que vimos em capítulos anteriores são métodos de objetos list e str!

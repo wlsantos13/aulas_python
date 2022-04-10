@@ -1,0 +1,99 @@
+7. Herança e polimorfismo
+Imagine que você tenha várias classes com várias características em comum: os mesmos atributos, os mesmos métodos ou métodos parecidos e com o mesmo nome e mesmos parâmetros. Reescrevê-los várias vezes é um desperdício de tempo e pode induzir ao erro. Além disso, se pecisarmos atualizar um método, precisaremos fazer a modificação múltiplas vezes. A herança e o polimorfismo são a solução para esse problema.
+
+7.1. Herança
+Para que diversas classes possuam os mesmos atributos e métodos, podemos criar uma classe com esses atributos e métodos e dizer que as outras classes herdarão dessa classe. As classes filhas possuem os mesmos atributos e métodos que a classe mãe. Para herdar, colocamos o nome da classe mãe entre parênteses na frente do nome da classe filha em sua definição.
+
+Se necessário, podemos redefinir um método na classe filha - assim, temos a garantia de que todas as classes filhas terão métodos com o mesmo nome, mas eles podem ter comportamentos diferentes.
+
+Execute o código abaixo:
+
+class Animal:
+    def __init__(self, nome):
+        self.nome = nome
+
+    def fala(self):
+        print(self.nome, 'faz barulho.')
+
+
+class Cachorro(Animal):
+    def fala(self):
+        print(self.nome, 'faz au au.')
+
+class Gato(Animal):
+    def fala(self):
+        print(self.nome, 'faz miau.')
+
+class Dinossauro(Animal):
+    pass
+    # pass é um comando "vazio": ele não faz nada, apenas evita erro por não colocarmos nada dentro da classe
+
+cachorrinho = Cachorro('Bidu')
+gatinho = Gato('Mingau')
+dino = Dinossauro('Horácio')
+
+cachorrinho.fala()
+gatinho.fala()
+dino.fala()
+Note que as classes Cachorro e Gato não possuem método construtor, apenas um método "fala", mas mesmo assim conseguimos criar objetos com um atributo "nome". O Python procurou o método construtor nessas classes, e ao não encontrar, procurou em sua classe mãe (Animal) e o usou. Ao chamarmos o método "fala", o Python usou o das próprias classes filhas, já que elas a possuiam.
+
+No caso da classe Dinossauro, fomos ainda mais radicais: não colocamos nada dentro da classe. Mas não só conseguimos criar um objeto com o atributo "nome", como conseguimos usar o método "fala". Assim como no caso do construtor, foi usado o método da classe mãe.
+
+7.1.1. Herdando parcialmente um método
+Imagine que você queira que um método de uma classe filha seja muito parecido com um método de uma classe mãe, mas possua algumas linhas a mais de código. Novamente caímos no problema da reutilização de código: se copiarmos e colarmos o método na classe filha e acrescentarmos algumas linhas, caso tenhamos que atualizar ou corrigir o método na classe mãe no futuro, precisaríamos nos lembrar de atualizá-lo também na classe filha.
+
+Podemos utilizar o método super. Ele nos dá acesso dentro de uma classe filha aos métodos originais da classe mãe. Assim, podemos redefinir na classe filha um método, digitar apenas as linhas de código novas/diferentes e em seguida usar o super para chamar o método original.
+
+Atualize a sua classe Cachorro para que ela agora também crie um atributo "raca", mas sem precisarmos novamente criar o atributo "nome":
+
+class Cachorro(Animal):
+    # redefinindo o __init__
+    def __init__(self, nome, raca):
+        # pedaço novo de código
+        self.raca = raca
+        # chamando a __init__ da classe mãe para fazer o resto do trabalho
+        super().__init__(nome)
+
+    def fala(self):
+        print(self.nome, 'faz au au.')
+7.2. Polimorfismo
+A palavra "polimorfismo" vem do grego antigo e significa "várias formas". A ideia do polimorfismo em programação é que um objeto de uma certa classe pode se comportar como objeto de outras classes. Mais especificamente, objetos de uma classe filha podem também ser tratados como se pertencessem à classe mãe.
+
+O método isinstance recebe 2 parâmetros: um objeto e uma classe. Ele retorna True caso o objeto pertenca à classe, e False caso não pertença. Cole os testes no programa abaixo para verificar que um cachorro não é um gato, um gato não é cachorro, cachorro é cachorro, gato é gato e ambos são animais:
+
+# o cachorrinho é cachorro?
+print(isinstance(cachorrinho, Cachorro))
+# o gatinho é gato?
+print(isinstance(gatinho, Gato))
+# o cachorrinho é gato?
+print(isinstance(cachorrinho, Gato))
+# o gatinho é cachorro?
+print(isinstance(gatinho, Cachorro))
+# o cachorrinho é animal?
+print(isinstance(cachorrinho, Animal))
+# o gatinho é animal?
+print(isinstance(gatinho, Animal))
+Isso é útil porque uma função que seja feita para lidar com Animal será capaz de lidar com qualquer classe herdeira de Animal com a mesma facilidade. Modifique a classe Animal para registrar todos os animais criados e ter uma função que faz todos eles falarem:
+
+class Animal:
+    # lista estática de animais criados
+    animais = []
+
+    def __init__(self, nome):
+        self.nome = nome
+        # criamos o animal e o colocaremos na lista estática
+        Animal.animais.append(self)
+
+    def fala(self):
+        print(self.nome, 'faz barulho.')
+
+    @staticmethod
+    def falatorio():
+        for a in Animal.animais:
+            a.fala()
+Agora façamos um teste no programa principal:
+
+Animal.falatorio()
+A classe Animal nem sequer sabe quem herda dela. Ela não conhece Cachorro, Gato ou Dinossauro. Mas ela sabe que todo animal possui um atributo nome e um método fala, e por isso não importa a qual subclasse eles pertencem: todos também pertencem à classe Animal.
+
+

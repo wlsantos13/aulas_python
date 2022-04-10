@@ -1,0 +1,26 @@
+3. Classes
+3.1. Criando uma classe
+Para definir uma classe em Python utilizamos a palavra class seguida de um nome para a classe.
+
+Normalmente nossas classes terão um método especial conhecido como método construtor. Ele sempre será chamado de __init__ em Python. Sempre que criamos um objeto novo o Python automaticamente executa o método construtor. Apesar de não ser obrigatório, é uma boa prática criar os atributos e atribuir um valor inicial para eles no construtor. Como todos os objetos executam o construtor ao serem criados, é um jeito de garantir que todos eles terão os mesmos atributos.
+
+Como comentamos anteriormente, os métodos devem receber uma referência para o objeto que o chamou. Essa é uma forma do método ter acesso aos atributos do objeto. O primeiro parâmetro de um método sempre será interpretado como sendo essa referência, e convenciona-se chamá-lo de self.
+
+Vejamos um exemplo de uma classe que representa jogadores para um jogo de dados. Cada jogador terá 2 atributos: um nome (que será fornecido na construção do objeto) e uma pontuação (que sempre começará em 0). Eles também terão 2 métodos: o construtor e um método que rola um dado.
+
+class Jogador:
+    # criando o método construtor
+    def __init__(self, nome):
+        # cria uma variável (atributo) dentro do objeto sendo criado
+        # esse atributo recebeu o nome passado como parâmetro
+        self.nome = nome
+        # cria outro atributo no objeto sendo criado
+        # esse atributo não veio como parâmetro, ele sempre começará valendo 0
+        self.pontuacao = 0
+
+    def rolaDado(self):
+        # sorteia um número de 1 a 6:
+        dado = random.randrange(1, 7) 
+
+        # atualiza o atributo "pontuacao" do objeto que chamou o método:
+        self.pontuacao = self.pontuacao + dado

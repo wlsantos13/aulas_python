@@ -1,0 +1,109 @@
+Análise de Complexidade
+Quando falamos sobre a complexidade de um algoritmo estamos nos referindo à quantidade de recursos (tempo de processamento ou espaço de armazenamento) que precisa ser consumida ou alocada para sua execução.
+
+Essa análise de complexidade é fundamental para que possamos projetar algoritmos eficientes e verificar a eficiência dos algoritmos que utilizamos. Além disso, para escolher a estrutura de dados mais adequada para cada problema que precisamos resolver, é necessário identificar quais operações essa estrutura fornece com máxima eficiência.
+
+1. Como analisar?
+Definimos T(n), uma função que representa o tempo de execução em função do tamanho da entrada n. O tamanho da entrada aqui é a quantidade de "coisas" que o algoritmo precisa processar. Fazemos a análise em função do tamanho da entrada pois o que nos interessa é identificar como o algoritmo irá escalar. Em outras palavras queremos responder algo do tipo: "Quando dobramos a entrada, o tempo de execução dobra? quadruplica?". Enfim, o que acontece com o tempo de execução a medida que o tamanho da entrada aumenta.
+
+Além disso, queremos uma medida que seja geral o suficiente para capturar o comportamento do algoritmo independentemente do tipo de máquina que o código irá executar. Se usássemos segundos ou minutos para medir o tempo, teríamos que fazer uma análise diferente para cada processador existente. Por esse motivo, o que contamos é a quantidade de operações básicas que são executadas e cada uma destas instruções leva um tempo constante.
+
+Vejamos, por exemplo, a análise do seguinte trecho de código:
+
+a = 0                 ... 1 atribuição
+for i in range(n):    ... executa n vezes o que estiver dentro do for
+    a = a + i         ...... atribuição e soma são executadas n vezes
+Logo, T(n) = 1 + noperações.
+
+2. Comportamento assintótico
+Exercício:
+Suponha que você tem algumas listas que precisam ser ordenadas e duas opções de algoritmos com as seguintes complexidades:
+
+Algoritmo 1: 2n² + 5n operações
+Algoritmo 2: 500n + 4000 operações
+Qual deles é mais eficiente para ordenar uma lista com 10 itens? e com 1000?
+Qual você escolheria para utilizar em uma lista arbitrária (da qual você não saberia o tamanho previamente)?
+
+Vejamos abaixo um gráfico do tempo de exeução desses dois algoritmos, Algoritmo 1 em vermelho e Algoritmo 2 em azul:
+
+01-01.png
+
+
+Pelo gráfico podemos ver que, embora Algoritmo 1 seja mais eficiente que Algoritmo 2 para "valores pequenos" de n, ele rapidamente se torna muito pior a medida que n aumenta. O termo quadrático de Algoritmo 1 (2n²) "domina" a função, ou seja, a contribuição desse termo é maior do que todos os outros de maneira que, para valores grandes de n, a contribuição dos demais termos se torna irrelevante para o comportamento da função.
+
+Dito isso, vemos que não há necessidade de identificar a função T(n) completamente precisa levando em conta cada instrução, o que realmente importa é o comportamento assintótico de T(n), ou seja o que ocorre com T(n) quando n aumenta consideravelmente. Em outras palavras, queremos a ordem da função T(n) de cada algoritmo, o termo dominante da função. Nesse caso, dizemos que Algoritmo 1 é O(n**2) (lê-se "da ordem de n quadrado", ou "o de n quadrado") e Algoritmo 2 é O(n). E é assim que analisaremos e representaremos a complexidade dos algoritmos daqui para frente.
+
+No exemplo da seção anterior: T(n) = 1 + n = O(n). De modo geral, ao fazer uma análise podemos focar nos loops do código.
+
+Mas e quando o loop muda de tamanho?
+
+a = 0
+for i in range(n):
+  for j in range(i + 1, n):
+    a = a + i
+    a = a + j
+print(a)
+Nesse caso vemos que o loop mais interno irá executar n-1 vezes na primeira iteração do loop externo, n-2 vezes na segunda iteração, e assim por diante:
+
+(n-1) + (n-2) + (n-3) +...+ 1 
+Trata-se da soma de todos os termos de uma Progressão Aritmética, e portanto é da ordem de n**2, O(n**2)
+
+Ou seja, o for interno irá executar n - 1 vezes para cada n do for externo. O que leva a uma função de complexidade T(n) = n(n - 1).
+
+Podemos simplificar em T(n) = n² - n, o que dá uma complexidade assintótica de O(n²).
+
+E qual a complexidade desse código?
+
+i = n
+while i > 1:
+  i = i / 2
+  print(i)
+A princípio podemos pensar que esse loop executaria n vezes, porém se olharmos com mais atenção o termo i está sendo cortado pela metade a cada iteração. Ou seja, esse loop será executado a quantidade de vezes que for possível dividir n por 2 e obter um resultado maior do que 1. Por exemplo, se n = 8 o loop executa 3 vezes, se n = 32 o loop executa 5 vezes. Para um n qualquer, o loop executa O(log2(n)).
+
+Complexidades mais comuns em ordem de eficiência (do pior para o melhor):
+
+- O(n!)     -> fatorial
+- O(2**n)     -> exponencial
+- O(n**2)     -> polinomial/quadrático
+- O(n*log2(n)) -> logaritmica
+- O(n)        -> linear
+- O(log2(n))   -> logaritmica
+- O(1)        -> constante
+
+
+01_02.png
+
+3. Exemplo prático: busca binária
+Agora que sabemos analisar algoritmos, vejamos um exemplo mais prático.
+Dada uma lista ordenada, defina uma função def find(lista, item) que retorna True caso item esteja na lista e False caso contrário.
+
+A resolução mais direta desse exercício seria, talvez, iterar por cada elemento da lista e comparar com o item buscado, se for igual retorna verdadeiro, se chegar ao fim da lista retorna falso.
+Implemente e analise a complexidade desse algoritmo. O que ocorre se buscamos um elemento que não está na lista e a lista for muito grande?
+
+Será que podemos fazer algo melhor?
+O algoritmo descrito acima não faz uso da informação de que a lista está ordenada, podemos usar essa ordenação a nosso favor.
+O código abaixo é uma implementação do algoritmo conhecido como busca binária: Começamos comparando o item com o elemento no meio da lista, se o item que queremos for menor que o meio procuramos na metade esquerda da lista, se for maior procuramos na metade direita.
+
+(Lembra da aula de recursão? Qual o caso base desse código recursivo? Será que é mais fácil fazer a busca binária iterativamente ou recursivamente?)
+
+def binary_search(l, item):
+    if len(l) == 0:
+        return False
+    meio = len(l)//2
+    if l[meio] == item:
+        return True
+    if item > l[meio]:
+        return binary_search(l[meio+1:], item)
+    else:
+        return binary_search(l[:meio], item)
+Qual é a complexidade desse código? Os exemplos da seção anterior podem ajudar na análise. Meça também o tempo de execução dos dois códigos, o que ocorre em cada um quando dobramos o tamanho da lista?
+
+Complexidade de estruturas de dados
+Tratar da complexidade de algoritmos também possibilita analisar a complexidade das estruturas de dados. Com isso, cada estrutura de dados (listas, dicionários, árvores) possui sua própria complexidade de memória e tempo de execução.
+
+Para analisar essas estruturas podemos nos apoiar nas seguintes operações: acesso, busca, inserção e remoção. De maneira simplificada, podemos anotar os custos médios de complexidade de listas, dicionários, árvores e grafos com a seguinte tabela.
+
+Estrutura de dados	Acesso	Busca	Inserção	Remoção
+Listas	O(1)	O(N)	O(N)	O(N)
+Dicionários	O(1)	O(1)	O(1)	O(1)
+Árvores	O(log2(N))	O(log2(N))	O(log2(N))	O(log2(N))

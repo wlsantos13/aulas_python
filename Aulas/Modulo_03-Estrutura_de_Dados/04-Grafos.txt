@@ -1,0 +1,318 @@
+Grafos
+Um grafo é um par de conjuntos, G = (V, E), sendo um deles o conjunto de vértices V e o outro um conunto de arestas E, onde cada aresta é um par de vértices. Os vértices, muitas vezes também chamados de nós, são os itens de interesse do que se quer modelar, e as arestas são as conexoes ou relações entre estes itens. Por exemplo, em uma aplicação logística, poderíamos modelar cada local de entrega como um vértice do grafo e as arestas indicariam se existe um caminho conectando estes dois pontos diretamente.
+
+As arestas podem ser direcionadas (mão única) ou não direcionadas (mão dupla). Além disso, as arestas podem ter um rótulo associado à elas, indicando por exemplo o custo de percorrer um caminho, ou a distância entre dois pontos de interesse.
+
+Quando existe uma aresta conectando um vértice u à um vértice v (u-v), dizemos que v é vizinho de u. Em grafos direcionados, é comum usarmos a nomenclatura de árvores e dizer que u é pai de v caso exista uma aresta direcionada u -> v
+
+1. Como representar um grafo no computador?
+Existem diferentes maneiras de se representar o conceito de grafo no computador, e cada uma pode ser mais ou menos indicada dependendo do problema que se quer resolver ou da forma como se deciciu modelá-lo. Vamos falar das duas maneiras mais comuns de representação.
+
+1.1 Matriz de adjacências
+Uma das maneiras mais simples de representar um grafo é utilizando uma matriz de adjacências. Vemos um exemplo de visualização dessa estrutura na figura abaixo.
+
+Para criar um grafo como uma matriz de adjacências, definimos uma matriz M de dimensões n x n, sendo n a quantidade de vértices. Inicializamos a matriz com zeros, e "marcamos" M[u][v] com um valor diferente de zero caso exista uma aresta conectando o vértice u ao vértice v.
+
+04-01.png
+
+No exemplo da figura acima vemos um grafo não direcionado e por isso temos a matriz diagonalmente simétrica (M[u][v] == M[v][u]). Ou seja, a aresta u-v é "de mão dupla". Mas com essa estrutura também é possivel modelar grafos direcioinados, basta não impor a simetria. Essa estrutura também permite representar arestas com custo, basta utilizar o valor do custo para marcar a aresta no lugar da constante 1 que utilizamos.
+
+1.2 Lista de adjacências
+Embora a matriz de adjacências seja uma maneira simples e flexível para representação dos grafos, podemos ver que, principalmente para grafos esparsos (grafos com poucas arestas), ela tende a gerar um desperdício de espaço (armazenando um monte de zeros para as conexões que não existem no grafo).
+
+Uma alternativa que mitiga esse desperdício de espaço é a lista de adjacêcias. Nessa representação, cada vértice está associado a uma lista com seus vizinhos. Assim, não gastamos espaço representando a ausência de arestas.
+
+
+Mas e se o grafo tiver uma grande quantidade de arestas? Ainda estariamos economizando espaço?
+
+
+04-02.jpg
+
+1.3 Comparação das estruturas
+Para um grafo G=(V,E) composto de vértices V e arestas E, listamos a complexidade das operações mais básicas.
+
+Matriz de Adj.	Lista de Adj.
+inserir aresta	O(1)	O(1)
+remover aresta	O(1)	O(grau_max(G))
+verificar adj. de dois nós	O(1)	O(grau_max(G))
+listar vizinhos de um nó	O(len(V))	O(grau_max(G))
+espaço de armazenamento	O(len(V)^2 )	O(len(V) + len(E)
+Obs: O grau de um vértice, é a quantidade de arestas que incide sobre esse vértice. O grau máximo de um grafo G é o maior grau dentre todos os vértices de G.
+
+Será que faz sentido dizer que uma representação é melhor que a outra? Em que situações seria melhor usar a matriz? E a lista?
+
+2. Implementação
+Abaixo vemos um exemplo de implementação de grafo como matriz de adjacências.
+
+# Matriz de Adjacências
+class GraphAM:
+    def __init__(self, n):
+        self.adj = [[0]* n for _ in range(n)]
+
+    def __repr__(self):
+        return str('\n'.join([str(line) for line in self.adj]))
+
+    def add_arrow(self, a, b, weight=1):
+        self.adj[a][b] = weight
+
+    def add_edge(self, a, b, weight=1):
+        self.add_arrow(a, b, weight)
+        self.add_arrow(b, a, weight)
+
+    def remove_arrow(self, a, b):
+        self.adj[a][b] = 0
+
+    def remove_edge(self, a, b):
+        self.remove_arrow(a, b)
+        self.remove_arrow(b, a)
+
+    def get_neighbors(self, a, get_weights=False):
+        if get_weights:
+            return [(i, v) for i, v in enumerate(self.adj[a]) if v]
+        return [i for i, v in enumerate(self.adj[a]) if v]
+
+    def __len__(self):
+        return len(self.adj)
+g = GraphAM(8)
+g.add_edge(0, 1)
+g.add_edge(0, 3)
+g.add_edge(1, 2)
+g.add_edge(3, 4)
+g.add_edge(3, 5)
+g.add_edge(4, 5)
+g.add_edge(4, 7)
+g.add_edge(5, 6)
+g.add_edge(5, 7)
+g.add_edge(6, 7)
+print(g)
+[0, 1, 0, 1, 0, 0, 0, 0]
+[1, 0, 1, 0, 0, 0, 0, 0]
+[0, 1, 0, 0, 0, 0, 0, 0]
+[1, 0, 0, 0, 1, 1, 0, 0]
+[0, 0, 0, 1, 0, 1, 0, 1]
+[0, 0, 0, 1, 1, 0, 1, 1]
+[0, 0, 0, 0, 0, 1, 0, 1]
+[0, 0, 0, 0, 1, 1, 1, 0]
+3. Percurso
+Quando utilizamos um grafo para modelar um problema, muitas vezes temos o interesse de percorrer esse grafo (Graph Traversal ou Search). Percorrer um grafo é passar por cada nó "visitando" o nó apenas uma vez.
+
+Talvez você se pergunte "mas não poderiamos simplesmente percorrer a lista de vértices do grafo?".
+
+Visitar um nó pode significar atualizar alguma informação em uma estrutura externa ou em um objeto associado ao id representado pelo nó do grafo. Mas muitas vezes o interesse está não na visita em si, mas no caminho percorrido para se chegar a esse nó, ou na ordem em que estes nós são visitados (veremos mais abaixo como um destes algoritmos de percurso pode ser usado para encontrar o menor caminho entre dois nós, por exemplo). E é por isso que os algoritmos de percurso precisam respeitar as arestas do grafo e não podem simplesmente percorrer a lista de vértices.
+
+3.1 Busca em profundidade (DFS - Depth First Search)
+Uma das maneiras de se percorrer um grafo é a busca em profundidade, que pode ser facilmente implementada de maneira recursiva.
+
+Sempre que a DFS encontra um vértice não visitado ela segue por esse vértice Ela tem esse nome pois ao percorrer o grafo ela "verticaliza". Ou seja, ao escolher um "ramo" do grafo, segue por esse ramo até que ele termine.
+
+Abaixo temos um exemplo de como a busca em profundidade percorreria esse grafo partindo do nó 0.
+
+
+04-03.jpg
+
+Veja que, para que a nossa função não fique visitando os nós incessantemente (devido a possivel existência de ciclos no grafo) precisamos marcar de alguma forma que um nó já foi visitado. (Qual o caso base da recursão abaixo?)
+
+def dfs(g, a, visited=None):
+    if visited is None:
+        visited = [0] * len(g)
+    print(f"visitei {a}")
+    visited[a] = 1
+    for v in g.get_neighbors(a):
+        if not visited[v]:
+            dfs(g, v, visited)
+    return
+dfs(g, 4)
+# 4: [4, 3, 0, 1, 2, 5, 6, 7]
+print()
+dfs(g, 0)
+# 0: [0, 1, 2, 3, 4, 5, 6, 7]
+Dizemos que um grafo é conexo se, partindo de qualquer nó é possível chegar em qualquer outro nó do grafo. Um grafo desconexo teria um pedaço "solto", isolado dos demais. Por exemplo, se eliminássemos a aresta 0-3 do grafo acima o grafo se tornaria desconexo. Pois partindo do conjunto {0, 1, 2, 9, 8} seria impossível chegar a qualquer nó do conjunto {3, 4, 5, 6, 7}.
+
+A busca em profundidade pode ser utilizada, por exemplo, para descobrir se o grafo é conexo ou não.
+
+3.2 Busca em largura (BFS - Breadth First Search)
+A busca em largura pode ser vista como uma maneira um pouco mais estruturada de se percorrer o grafo, e também um pouquinho mais complicaa de se implementar.
+
+A BFS visita os nós do grafo em "camadas" partindo da origem, cada camada está uma aresta a mais de distância da origem em relação a camada anterior. Ou seja, partindo de um nó origem s os nós diretamente conectados a s (seus vizinhos) são visitados primeiro antes dos nós conectados aos vizinhos de s (seus "vizinhos de segundo grau").
+
+A figura abaixo mostra um exemplo gráfico desse comportamento em camadas.
+
+
+04-04.jpg
+
+Note que a ordem de visitação imposta pela BFS é parcial. Existem diferentes ordenações possíveis que qualificam como percurso BFS, o importante é respeitar as camadas. Por exemplo, não importa se 1 foi visitado antes do 3 ou se o 3 foi visitado antes do 1 desde que ambos tenham sido visitados antes de 2, 4 e 5.
+
+Ao implementar precisamos de uma fila para garantir que os nós de uma camada i serão todos visitados antes dos nós da camada i+1.
+
+def bfs(g, s):
+    visited = [0] * len(g)
+    queue = [s]
+    sequence = []
+    while len(queue):
+        u = queue.pop(0)
+        if visited[u]:
+            continue
+        #print(f"visitei {u}")
+        visited[u] = 1
+        sequence.append(u)
+        for v in g.get_neighbors(u):
+            if not visited[v]:
+                queue.append(v)
+    return sequence
+print(bfs(g, 4))
+#4: [4, 3, 5, 7, 0, 6, 1, 2]
+print(bfs(g, 0))
+#0: [0, 1, 3, 2, 4, 5, 7, 6]
+3.3 DFS iterativa
+Simplesmente trocando a estrutura de fila para uma pilha podemos obter uma versão iterativa da DFS. Obs: note que os percursos (BFS e DFS) não são necessariamente únicos.
+
+def dfs_iter(g, s):
+    visited = [0] * len(g)
+    stack = [s]
+    sequence = []
+    while len(stack):
+        u = stack.pop()
+        if visited[u]:
+            continue
+        #print(f"visitei {u}")
+        visited[u] = 1
+        sequence.append(u)
+        for v in g.get_neighbors(u):
+            if not visited[v]:
+                stack.append(v)
+    return sequence
+print(dfs_iter(g, 4))
+#4: [4, 7, 6, 5, 3, 0, 1, 2]
+print(dfs_iter(g, 0))
+#0: [0, 3, 5, 7, 6, 4, 1, 2]
+4. Menor caminho
+Uma das aplicações mais comuns em grafos é o cálculo do menor caminho entre vértices. Aqui veremos o problema conhecido como Single Source Shortest Path posto da seguinte forma: Dado um grafo G e um vértice origem s encontre o menor caminho partindo de s até cada vértice v pertencente a G.
+
+Vamos começar com o caso de grafos sem custo (ou custo constante = 1) nas arestas, ou seja, o menor caminho nesse caso é o caminho com menos arestas.
+
+Para encontrar o menor caminho, vamos modificar a função que implementamos para a busca em largura (BFS)
+
+Já sabemos que um nó que está a uma aresta de distância da origem será visitado na primeira camada, um nó que está a duas arestas da origem será visitado na segunda, e assim por diante. Ou seja, os nós já são vizitados na ordem de menor caminho e a camada dá o custo desse caminho.
+
+4.1 calculando distâncias
+Modificamos a BFS anterior para calcular a distancia entre cada nó e o nó origem. Note que esse procedimento só funciona pois todas as arestas tem o mesmo custo e portanto a distância do nó origem s à qualquer outro nó v é simplesmente a "camada" de v, ou seja, a quantas arestas v está de s.
+
+def bfs_dist(g, s):
+    # armazena a distancia entre o nó origem (s) e os demais nós do grafo
+    dist = [float('inf')] * len(g)
+    dist[s] = 0
+    queue = [s]
+    while len(queue):
+        u = queue.pop(0)
+        for v in g.get_neighbors(u):
+            # podemos usar a distância no lugar do visited
+            # nós que tem distância infinita ainda não foram visitados
+            if dist[v] == float('inf'):
+                # esse cálculo funciona por 2 motivos:
+                # 1) a ordem que em estamos percorrendo o grafo
+                #    (largura - visita primeiro os nós mais próximos da origem)
+                # 2) o fato de que, ao colocar um nó na fila,
+                #    já calculamos sua distância até a origem
+                #    (caso base dist[s] = 0),
+                #    e a distancia de um nó até seu vizinho é sempre 1 (para grafos sem peso)
+                dist[v] = dist[u] + 1
+                queue.append(v)
+    return dist
+print(bfs_dist(g, 4))
+#4: [0, 1, 2, 3, 4, 5, 6, 7] <- indices
+#4: [2, 3, 4, 1, 0, 1, 2, 1] <- distancia de 4 até o indice i
+print(bfs_dist(g, 0))
+#0: [0, 1, 2, 3, 4, 5, 6, 7] <- indices
+#0: [0, 1, 2, 1, 2, 2, 3, 3] <- distancia de 0 até o indice i
+4.2 construindo o caminho
+Agora modificamos mais um pouco a nossa BFS para retornar um "vetor de pais" que nos possibilitará reconstruir os caminhos: Sempre que chegamos em um nó v, salvamos em parent[v] o nó pelo qual chegamos à v, ou seja, o pai de v.
+
+def bfs_path(g, s):
+    dist = [float('inf')] * len(g)
+    parent = [None] * len(g)
+    dist[s] = 0
+    queue = [s]
+    while len(queue):
+        u = queue.pop(0)
+        for v in g.get_neighbors(u):
+            if dist[v] == float('inf'):
+                dist[v] = dist[u] + 1
+                parent[v] = u
+                queue.append(v)
+    return dist, parent
+dist, parent = bfs_path(g, 0)
+Com o vetor de pais parent, podemos criar uma função recursiva que nos dá o menor caminho da origem a qualquer nó.
+
+def build_path(parent, t):
+    if parent[t] is None:
+        return [t]
+    return build_path(parent, parent[t]) + [t]
+print('->'.join(map(str,build_path(parent, 5))))
+# 0->3->5
+print('->'.join(map(str,build_path(parent, 7))))
+# 0->3->4->7
+Obs: Aqui vemos um outro exemplo interessante de recursão. Experimente fazer uma versão iterativa de build_path e compare com essa versão recursiva.
+
+4.3 Menor caminho para grafos com custo nas arestas
+Grafos sem custo nas arestas são muito utilizados e nesses casos a nossa BFS modificada será suficiente para encontrar o menor caminho. Porém, muitas aplicações precisam levar em conta custos diferentes para cada aresta. Por exemplo a distância entre duas cidades ou o custo de pedágio para se utilizar determinada rodovia.
+
+A figura abaixo mostra um grafo com custos nas aretas. Note que a BFS indicaria que o menor caminho de 0 a 1 seria simplesmente 0->1, mas podemos ver que 0->2->1, embora utilize mais arestas, tem um custo menor. E agora?
+
+04-05.jpg
+
+
+Existem diferentes algoritmos para encontrar o menor caminho entre todos os vértices e um vértice origem (Single Source Shortest Path Problem). Aqui vamos utilizar o algoritmo de Dijkstra por ser um dos mais famosos e também por já estar relativamente próximo da nossa BFS modificada.
+
+Primeiramente, vamos precisar de uma nova estrutura conhecida como fila de prioridades. Esse é um tipo especial de fila que mantém os items ordenados de acordo com sua prioridade.
+
+Vejamos um exemplo abaixo:
+
+from queue import PriorityQueue
+
+pq = PriorityQueue()
+pq.put((2, 'code'))
+pq.put((1, 'eat'))
+pq.put((3, 'sleep'))
+
+while not pq.empty():
+    next_item = pq.get()
+    print(next_item)
+
+# (1, 'eat')
+# (2, 'code')
+# (3, 'sleep')
+Note que, independentemente da ordem em que os itens são inseridos na fila, eles sempre sairão ordenados de acordo com sua prioridade (no caso desta implementação, a prioridade é o primeiro item da tupla, e a ordem é ascendente).
+
+Finalmente podemos implementar o Algoritmo de Dijkstra para encontrar menores caminhos (complexidade O(|E|+|V|log|V|)). Note que é uma idéia similar ao que fizemos com a BFS modificada. Porém, como o grafo tem custos, precisamos priorizar o menor caminho.
+
+A complexidade adicional log|V| vem da fila de prioridades que utiliza uma estrutura de dados (min-heap) que possibilita achar o mínimo (e fazer inserções) em tempo log(n)
+
+def dijkstra(g, s):
+    dist = [float('inf')] * len(g)
+    parent = [None] * len(g)
+    queue = PriorityQueue()
+
+    dist[s] = 0
+    queue.put((dist[s], s))
+    while not queue.empty():
+        current_dist, current = queue.get()
+        if current_dist > dist[current]:
+            # caso um nó entre mais de uma vez na fila, ignorar
+            continue
+        for v, weight in g.get_neighbors(current, get_weights=True):
+            new_dist = dist[current] + weight
+            # testa se encontrou um caminho mais curto e atualiza as distâncias
+            if new_dist < dist[v]:
+                dist[v] = new_dist
+                parent[v] = current
+                queue.put((dist[v], v))
+
+    return dist, parent
+#
+
+s = 0
+dist, parent = dijkstra(g, s)
+t = 10
+path = '->'.join(map(str,build_path(parent, t)))
+print(f'Caminho de {s} até {t}: {path} (custo: {dist[t]})')
+# Caminho de 0 até 10: 0->8->9->10 (custo: 9)

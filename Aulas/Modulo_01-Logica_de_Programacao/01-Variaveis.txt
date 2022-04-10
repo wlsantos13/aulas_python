@@ -1,0 +1,112 @@
+
+Variáveis, entradas e saídas
+
+1. Variáveis
+Variáveis são "pedacinhos de memória" onde guardamos dados. Sempre que referenciamos o nome, o pedacinho de memória é acessado e seu dado é recuperado.
+
+Criamos variáveis dando um nome a elas e usando o operador de atribuição (o sinal de igualdade: =) para atribuir um valor inicial.
+
+x = 10
+
+No exemplo acima, foi criada uma variável chamada x que guarda o valor 10. Ou seja, reservamos um pedacinho de memória e guardamos o número 10 lá.
+
+
+2. Tipos de variáveis
+Variáveis em Python possuem 4 tipos básicos:
+
+int: números inteiros, ou seja, números sem parte decimal: 0, 5, -1, 1000
+float: números reais, ou seja, números com parte decimal: 1.0, -2.7, 3.14
+str: cadeias de caracteres (strings), ou seja, dados textuais: 'Olá Mundo!', "eu tenho 18 anos"
+bool: valores lógicos (booleanos), ou seja, apenas um entre dois valores possíveis: True ou False
+nome = 'Zé' # uma variável do tipo string - note as aspas
+email = "ze@letscode.com.br" # outra string
+idade = 22 # uma variável inteira
+salario = 5999.85 # uma variável float - usamos ponto, não vírgula
+receberNewsletter = True # uma variável bool
+Dica: Tente sempre utilizar nomes intuitivos para suas variáveis. O nome deveria ser uma boa descrição do dado que a variável guarda. Nomes como 'x', 'y', 'z', 'a', 'b', 'c', 'a1', 'a2', 'a3' etc podem se tornar bastante confusos quando nossos códigos são muito grandes.
+
+3. Comentários
+Note que nos exemplos acima, escrevemos textos no meio do código utilizando o símbolo #. Esses textos são comentários: quando utilizamos o símbolo #, o Python irá ignorar tudo o que vier em seguida (na mesma linha). Utilizamos comentários para explicar pedaços do nosso código para que nós mesmos ou outros colegas no futuro entendam o que fizemos e possam modificar ou corrigir o código com mais facilidade. Também podemos escrever comentários de múltiplas linhas utilizando aspas triplas - neste caso, utilizamos-as para abrir e depois para fechar o bloco de comentários.
+
+'''
+Este é um comentário de várias linhas.
+Tudo que veio após o primeiro trio de aspas e antes do segundo
+será ignorado pelo Python.
+'''
+4. Saídas
+Chamamos de saídas do nosso programa todos os dados que são gerados pelo programa e serão fornecidos para o usuário. A função de saída em tela no Python é o print. Colocamos entre parênteses o dado que queremos que apareça.
+
+print('olá mundo!') # exibe a frase 'olá mundo' na tela
+Os dados a serem exibidos não precisam ser valores constantes, como a frase fixa acima. Eles podem ser variáveis:
+
+idade = 20
+print(idade)
+Note que quando usamos aspas, o Python trata o valor como uma string, um texto literal. Quando não usamos aspas, o Python irá considerar que aquele é o nome de uma variável e irá acessá-la para buscar seu valor.
+
+Podemos exibir múltiplos dados em um print. Para isso, basta separá-los por vírgula e eles irão aparecer na tela na mesma ordem que apareceram no código:
+
+nome = 'Mario'
+linguagem = 'Python'
+print('Oi, eu sou o', nome, 'e eu programo em', linguagem)
+
+```
+Resultado na tela:
+Oi, eu sou o Mario e eu programo em Python
+```
+5. Entradas
+Assim como temos dados de saída - dados gerados pelo código e fornecidos para o usuário - também temos dados de entrada: informações que o usuário possuí e deve fornecer ao código. Para receber entradas pelo teclado, utilizaremos a função input. Devemos fazer uma variável receber o valor capturado pelo input.
+
+nome = input()
+print('Olá', nome)
+O programa acima captura o nome do usuário e em seguida mostra a mensagem "olá" seguida do nome do usuário. Note que o programa fica parado em uma tela em branco com um cursor piscando aguardando a digitação pelo usuário. Isso pode ser confuso para o usuário, que não sabe o que o programa está esperando. Por isso, dentro dos parênteses do input podemos colocar uma mensagem simples informando o que o programa gostaria que ele fizesse:
+
+nome = input('Qual é o seu nome?')
+print('Olá', nome)
+5.1. Determinando o tipo da entrada
+Vamos imaginar um programa que informa quantos anos falta para que uma criança atinja a maioridade. Podemos ler a idade da criança pelo teclado (entrada), subtrair a idade do número 18 (processamento) e exibir o resultado da conta na tela (saída). Considere a solução abaixo:
+
+idade = input('Digite a sua idade: ')
+resto = 18 - idade
+print('Faltam', resto, 'anos.')
+Se você copiar e executar o programa, ele dará erro na segunda linha. Isso ocorre porque o teclado é uma "máquina de escrever" um pouco mais moderna. Portanto, tudo que entra pelo teclado é considerado pelo Python como texto (ou seja, str). Porém, não podemos "fazer contas" com textos. Fazemos contas com números. Portanto, neste caso, precisamos falar para o Python interpretar a nossa entrada como um número. Um bom tipo de dado para "idade" seria um número inteiro. Fazemos isso colocando o nome do tipo desejado, e entre parênteses colocamos nosso input:
+
+idade = int(input('Digite a sua idade: '))
+resto = 18 - idade
+print('Faltam', resto, 'anos.')
+6. Operadores
+Como podemos observar no exemplo anterior, o Python faz operações aritméticas de maneira bastante intuitiva, similar ao que estamos acostumados. Os operadores aceitos são:
+
+Soma: +
+Subtração: -
+Multiplicação: *
+Divisão: /
+Divisão inteira: //
+Resto da divisão: %
+Potência: **
+numero1 = int(input('Digite um número: '))
+numero2 = int(input('Digite outro número: ''))
+soma = numero1 + numero2
+subtracao = numero1 - numero2
+multiplicacao = numero1 * numero2
+divisao = numero1 / numero2
+divinteira = numero1 // numero2
+resto = numero1 % numero2
+elevado = numero1 ** numero2
+print('Soma: ', soma)
+print('Subtração: ', subtracao)
+print('Multiplicação: ', multiplicacao)
+print('Divisão: ', divisao)
+print('Divisão inteira: ', divinteira)
+print('Resto da divisão: ', resto)
+print('Potência: ', elevado)
+Operadores de divisão: Note que temos 3 operadores de divisão. O que seria cada um deles? Vamos supor que numero1 seja 15 e numero2 seja 6. Ao calcular essa divisão, chegamos na seguinte situação:
+
+15 |__ 6
+03 | 2
+
+Note que, considerando apenas números inteiros, não conseguimos mais prosseguir com a divisão. Neste caso, a divisão inteira (numero1 // numero2) dará 2. Já o resto da divisão (numero1 % numero2) dará 3. Porém, considerando casas decimais é possível prosseguir com a divisão:
+
+15 |__ 6
+30 | 2,5
+0
+Portanto, a divisão comum (numero1 / numero2) dará 2.5.

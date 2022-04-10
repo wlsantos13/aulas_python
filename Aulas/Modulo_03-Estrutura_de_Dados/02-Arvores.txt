@@ -1,0 +1,48 @@
+Árvores
+O que é uma árvore?
+Árvore é uma estrutura de dados definida por uma coleção de elementos, chamados nós, que são conectados entre si de maneira a modelar relações hierarquicas, mantendo as seguintes propriedades:
+
+Existe um nó específico, chamado raiz, que fica no topo da hierarquia
+Todo nó é conectado a raiz por um único caminho
+Existem diversos exemplos em outras áreas, além da matemática e da ciência da computação, onde árvores são utilizadas. Por exemplo, a árvore filogenética que agrupa espécies de acordo com suas relações evolutivas. A figura abaixo mostra um organograma empresarial, que também é um exemplo de árvore:
+
+02-01.png
+
+
+Fazendo o paralelo com a nossa definição: o "presidente", que está no topo da hierarquia, é a raiz da árvore. Note que há apenas um caminho entre o presidente e cada um dos demais nós. Por exemplo, o caminho do "presidente" até o "auxiliar de marketing", seria "presidente"-> "diretor comercial"-> "gerente de marketing"-> "auxiliar de marketing".
+
+Terminologia
+Para falarmos desta estrutura, definir e analisar algoritmos sobre ela, é necessário nomearmos algumas partes específicas sobre as quais faremos referência posteriormente.
+
+02-02.png
+
+Algumas definições tomando como exemplo a figura acima:
+
+Quando um nó A está diretamente acima de um nó B, dizemos que A é "pai" de B ou que B é "filho" de A.
+Raiz: é o topo da hierarquia (A)
+Folhas: são os nós na camada mais baixa da hierarquia, os nós que não têm filhos (H, I, F, G)
+Nós internos: são os nós que não são folhas nem raiz (B, C, D, E)
+Altura da árvore (h): é a distância entre a raiz e a folha mais afastada
+de acordo com a definição, um único nó, sozinho, também é uma árvore
+toda sub-árvore é árvore (estrutura recursiva)
+todo nó, exceto a raiz, tem exatamente um nó pai
+Árvore Binária de Busca (Binary Search Tree)
+Uma árvode binária de busca, é um tipo mais específico de árvore. Além das propriedades básicas de uma árvore, também precisa satisfazer as seguintes:
+
+Todo nó tem no máximo dois filhos
+Para cada nó v, v é maior que todos os nós a sua esquerda e menor que todos os nós a sua direita
+Tipos:
+
+Cheia: todos os nós possúem 2 filhos ou são folhas (nenhum filho)
+Completa: todos os níveis são cheios, exceto (possivelmente) o último.
+Balanceada: se quantidade de nós está entre 2h−1 e 2h.
+Implementação
+Para implementar uma estrutura de árvore binária de busca, criamos uma classe nó com três atributos:
+
+conteúdo: o valor útil, no nosso exemplo serão números inteiros, mas poderia ser qualquer outro tipo de ID fazendo referência a um objeto mais complexo
+esquerda: referência ao filho à esquerda
+direita: referência ao filho à direita
+A figura abaixo mostra uma representação dessa implementação:
+
+02-03.png
+

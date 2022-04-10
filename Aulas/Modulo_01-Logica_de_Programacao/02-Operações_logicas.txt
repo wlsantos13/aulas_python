@@ -1,0 +1,47 @@
+
+Operações lógicas
+1. Operações booleanas
+Na aula passada, vimos que nossos dados podem ter 4 tipos básicos: str (texto), int (número inteiro), float (número real) e bool (lógico). Vimos diversas operações aritméticas também, como a soma, a divisão ou a potência, cujos resultados são int ou float. Porém, podemos ter também operações cujo resultado é bool: são operações lógicas. Operações lógicas tipicamente são comparações:
+
+comparacao1 = 5 > 3
+print(comparacao1)
+comparacao2 = 5 < 3
+print(comparacao2)
+Se executarmos o código acima, a saída que teremos na tela será:
+
+True
+False
+Isso ocorre porque 5 é maior que 3. Portanto, comparacao1 recebeu uma expressão cujo valor lógico é verdadeiro, portanto seu resultado foi True, e o oposto ocorreu para comparacao2. O Python possui 6 operadores de comparação:
+
+Maior que: >
+Maior ou igual: >=
+Menor que: <
+Menor ou igual: <=
+Igual: ==
+Diferente: !=
+Note que o operador para comparar se 2 valores são iguais é ==, e não =. Isso ocorre porque o operador = é o nosso operador de atribuição: ele diz que a variável à sua esquerda deve receber o valor da expressão à direita. O operador de == irá testar se o valor à sua esquerda é igual ao valor à sua direita e irá responder True ou False, como todos os outros operadores de comparação.
+
+1.1. Conjunções lógicas
+Em alguns casos precisamos testar se duas ou mais condições são verdadeiras. Imagine, por exemplo, que o critério de aprovação em uma escola seja média superior a 6.0 e presença superior a 75%. Neste caso, o aluno precisa atender a ambos os critérios para ser aprovado. Se ele tirou uma ótima nota mas faltou demais, será reprovado. Se ele compareceu a todas as aulas mas teve notas baixas, idem. O código abaixo testa se é verdade que o aluno foi aprovado:
+
+media = float(input('Digite a média do aluno: '))
+presenca = float(input('Digite as presenças do aluno: '))
+
+aprovado = media >= 6.0 and presenca >= 0.75
+print(aprovado)
+Execute o código acima e teste algumas combinações diferentes de valores. Note que basta uma das condições ser falsa para que o resultado total seja False.
+
+Porém, nem sempre precisamos que ambas as condições sejam verdadeiras. Vários de nós já nos deparamos com promoções de queima de estoque anunciadas da seguinte maneira: "promoção válida até o dia 15 deste mês ou enquanto durarem os estoques". Neste caso, para a promoção acabar, não é necessário que ambas as coisas ocorram (atingir o dia 15 e zerar o estoque). Se ainda temos 10 itens no estoque mas hoje é dia 16, a promoção acabou. Se hoje é dia 5 mas o estoque está zerado, a promoção acabou. O programa abaixo testa se a promoção acabou:
+
+diaFinal = int(input('Digite o dia do mês para encerrar a promoção: '))
+diaAtual = int(input('Digite o dia do mês atual: '))
+estoque = int(input('Digite a quantidade de itens no estoque: '))
+
+acabou = diaAtual > diaFinal or estoque == 0
+print(acabou)
+Faça alguns testes com o programa acima e note que basta uma condição ser verdadeira para seu resultado ser True.
+
+Resumo:
+
+and: verdadeiro se condição 1 for verdadeira e condição 2 for verdadeira
+or: verdadeiro se condição 1 for verdadeira ou condiçã 2 for verdadeira

@@ -1,0 +1,66 @@
+Estruturas de dados (dicionários)
+Quando utilizamos um dicionário (o de papel, com definições), não temos o hábito de procurar pela palavra que está em uma determinada posição. Ao invés disso, nós buscamos pela palavra em si, e ao encontrá-la ela contém uma definição.
+
+A estrutura dicionário em Python é uma coleção de dados. Porém, ela não é indexada. Ao adicionarmos elementos em um dicionário, sempre o fazemos aos pares: todo elemento terá uma chave e um valor. Ou seja, uma chave identifica/leva a um valor.
+
+Organizar usando o esquema de pares, permite achar uma informação de uma forma mais fácil (quando comparado a uma lista, que possui índices).
+
+Por exemplo, a chave pode ser uma string que utilizaremos como se fosse o índice. É como se fosse a palavra que buscamos em um dicionário de papel. O valor pode ser qualquer dado: um int, um float, uma string, valor lógico, uma lista ou até mesmo outro dicionário... Ele é como se fosse a definição que encontramos vinculada à palavra que encontramos no dicionário de papel.
+
+#Exemplo 1
+dicionario = {'curso':'Python Pro', 'escola':"Let's Code"}
+print(dicionario['curso'])
+print(dicionario['escola'])
+Adicionando elementos em um dicionário
+Para adicionar elementos, vamos utilizar o comando update(). Onde informamos o novo par chave/valor que será incluído
+
+#Exemplo 2
+dicionario = {'curso':'Python Pro', 'escola':"Let's Code"}
+dicionario.update({'unidade':'Faria Lima'})
+print(dicionario)
+Percorrendo um dicionário
+Anteriormente, ao percorrer listas usávamos o comando while. Porém usar while para percorrer dicionários não funciona: um dicionário não possui índices para serem percorridos.
+
+Com isso, usaremos um novo comando: o for. Agora seremos capazes de percorrer as chaves de um dicionário. Ao fazer isso, as chaves serão percorridas, não os valores. Porém, a partir da chave obtém-se o valor:
+
+#Exemplo 3
+dicionario = {'curso':'Python Pro', 'escola':"Let's Code"}
+dicionario.update({'unidade':'Faria Lima'})
+
+for chave in dicionario:
+    print(chave, '--->', dicionario[chave])
+Separando chaves e valores
+O Python possui funções para obter, separadamente, todas as chaves ou todos os valores de um dicionário. Elas são, respectivamente, keys e values. Podemos transformar o retorno dessa função em uma lista ou tupla.
+
+#Exemplo 4
+dicionario = {'curso':'Python Pro', 'escola':"Let's Code"}
+dicionario.update({'unidade':'Faria Lima'})
+
+chaves = list(dicionario.keys()) # converte para lista
+valores = list(dicionario.values()) # converte para lista
+
+print('Chaves: ', chaves)
+print('Valores:', valores)
+Testando a existência de uma chave
+Antes de criar uma chave nova em um dicionário, convém testar se ela já existe, para evitar sobrescrever um valor. Podemos fazer isso com o operador in (sim, o mesmo que usamos no for!). Neste contexto, ele retornará True se a chave existir e False caso não exista.
+
+Vamos supor que no exemplo abaixo o valor de 'cursos' seja uma lista com todos os cursos que o usuário está fazendo.
+
+#Exemplo 5
+dicionario = {'escola':"Let's Code", 'unidade':'Faria Lima'}
+
+# Neste caso, 'cursos' ainda não existe.
+# Cairemos no else e será criada uma lista com a string 'Python'.
+if 'cursos' in dicionario:
+    dicionario['cursos'].append('Python')
+else:
+    dicionario.update({'cursos':['Python']})
+
+# Agora a chave já existe. 
+# Portanto, será adicionado 'Data Science' à lista. 
+if 'cursos' in dicionario:
+    dicionario['cursos'].append('Data Science')
+else:
+    dicionario.update({'cursos': ['Data Science']})
+
+print(dicionario)

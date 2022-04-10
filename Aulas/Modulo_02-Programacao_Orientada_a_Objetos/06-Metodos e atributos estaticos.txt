@@ -1,0 +1,48 @@
+6. Métodos e atributos estáticos
+Todos os exemplos até agora mostraram atributos e métodos pertencendo aos objetos: a classe definia quais atributos e métodos o objeto deveria ter, mas cada objeto tem um valor distinto para cada atributo e os métodos devem ser chamados a partir dos objetos.
+
+Porém, há casos onde gostaríamos que uma certa informação fosse coletiva. Pense, por exemplo, na população do Brasil: cada pessoa deve saber seu próprio nome e seu próprio CPF. Porém, é competência da administração federal ter dados como o número total de habitantes e registro de todos os CPFs em circulação. Não faria sentido exigir que cada habitante soubesse todas essas informações.
+
+Da mesma forma, realizar o censo para manter essas informações atualizadas não é de competência de cada cidadão individual, mas da administração federal. Ela deverá ter seus mecanismos para sempre ter informações atualizadas sobre os habitantes.
+
+Esses problemas são resolvidos pelos atributos estáticos e métodos estáticos.
+
+6.1. Atributos estáticos
+Um atributo estático nada mais é do que um atributo que é coletivo, pertencente à classe como um todo. Não haverá uma cópia diferente dele para cada objeto, mas sim uma única informação que pode ser acessada diretamente na classe, sem sequer necessitar que um objeto já tenha sido instanciado.
+
+Para criar um atributo estático, basta criar uma variável (atribuindo um valor inicial a ela) dentro da classe, mas fora de qualquer um de seus métodos.
+
+class Pessoa:
+    # criando um atributo estático
+    populacao = 0
+
+    def __init__(self, nome, cpf):
+        self.nome = nome
+        self.cpf =  cpf
+        # o __init__ é chamado quando uma Pessoa nova é criada...
+        # ...portanto, vamos atualizar nossa populacao sempre que alguém for criado!
+        Pessoa.populacao = Pessoa.populacao + 1
+
+maisVelho = Pessoa('Mario', 12345678901)
+maisNovo = Pessoa('Luigi', 98765432109)
+
+# Note que para acessar o atributo estático, não referenciamos um objeto, e sim a classe!
+print('População atual: ', Pessoa.populacao)
+6.2. Métodos estáticos
+Imagine que você precise de algum método que seja bastante útil para a classe, mas que não necessariamente precise de um objeto. Chamamos esses métodos de métodos estáticos.
+
+Para que um método seja estático, podemos utilizar um decorator (de maneira simplificada, um modificador de comportamento da função). Nós iremos escrever @staticmethod acima da definição do método.
+
+Nosso método não terá um self, apenas parâmetros que sejam realmente necessários. E na hora de usá-lo, usaremos o nome da classe ao invés do nome de um objeto, como fizemos com os atributos estáticos.
+
+Adicione o seguinte método à classe Pessoa:
+
+@staticmethod
+    def popTotal():
+        print('População total:', Pessoa.populacao)
+Note que ele não possui self, pois ele não precisa de acesso a nenhuma informação de qualquer objeto em particular.
+
+Para chamá-lo, inclua a seguinte linha no programa principal:
+
+Pessoa.popTotal()
+
